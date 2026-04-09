@@ -1,0 +1,200 @@
+.welcome-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-page::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -200px;
+  right: -200px;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.welcome-page::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(123, 44, 191, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  bottom: -150px;
+  left: -150px;
+  animation: pulse 4s ease-in-out infinite 2s;
+}
+
+.welcome-content {
+  max-width: 600px;
+  text-align: center;
+  z-index: 1;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 30px;
+  background: var(--accent-gradient);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-glow);
+  animation: float 3s ease-in-out infinite;
+}
+
+.logo svg {
+  width: 70px;
+  height: 70px;
+  color: white;
+}
+
+h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.tagline {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 50px;
+  line-height: 1.6;
+}
+
+.locate-button {
+  padding: 20px 50px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-glow);
+  position: relative;
+  overflow: hidden;
+}
+
+.locate-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.locate-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.locate-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 40px rgba(0, 217, 255, 0.5);
+}
+
+.locate-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.locate-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.features {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.feature-card {
+  background: var(--bg-secondary);
+  padding: 25px;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-card);
+}
+
+.feature-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 15px;
+  color: var(--accent-primary);
+}
+
+.feature-card h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.feature-card p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .locate-button {
+    padding: 16px 40px;
+    font-size: 1.1rem;
+  }
+}
