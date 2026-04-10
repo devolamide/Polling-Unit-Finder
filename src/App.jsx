@@ -1,19 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import WelcomePage from './pages/WelcomePage';
 import ResultsPage from './pages/ResultsPage';
+import { buildGeohashIndex, searchNearbyUnits } from './utils/geohash';
 
 function App() {
   const [page, setPage] = useState('welcome');
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [geohashIndex, setGeohashIndex] = useState(null);
+  const [indexLoading, setIndexLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAndIndexData = async () => {
+      try {
+        const response = await fetch('/data.json');
+        const pollingUnits = await response.json();
+        
+        console.log(`Building geohash index for ${pollingUnits.length} polling units...`);
+        const index = buildGeohashIndex(pollingUnits, 5);
+        console.log(`Index built with ${index.size} geohash buckets`);
+        
+        setGeohashIndex(index);
+      } catch (error) {
+        console.error('Error loading polling data:', error);
+        alert('Failed to load polling data. Please refresh the page.');
+      } finally {
+        setIndexLoading(false);
+      }
+    };
+
+    loadAndIndexData();
+  }, []);
 
   const handleLocate = async (userLocation) => {
+    if (!geohashIndex) {
+      alert('Polling data is still loading. Please wait.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await fetch('/data.json');
-      const pollingUnits = await response.json();
+      const nearbyUnits = searchNearbyUnits(
+        geohashIndex,
+        userLocation.latitude,
+        userLocation.longitude,
+        5
+      );
       
-      const unitsWithDistance = pollingUnits.map(unit => {
+      console.log(`Found ${nearbyUnits.length} nearby units using geohash`);
+      
+      const unitsWithDistance = nearbyUnits.map(unit => {
         const distance = calculateDistance(
           userLocation.latitude,
           userLocation.longitude,
@@ -89,12 +125,28 @@ function App() {
 
   return (
     <div className="app">
-      {page === 'welcome' && (
-        <WelcomePage onLocate={handleLocate} loading={loading} />
-      )}
-      
-      {page === 'results' && results && (
-        <ResultsPage results={results} onBack={handleBack} />
+      {indexLoading ? (
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          flexDirection: 'column',
+          gap: '1rem'
+        }}>
+          <div className="loader"></div>
+          <p>Loading polling data...</p>
+        </div>
+      ) : (
+        <>
+          {page === 'welcome' && (
+            <WelcomePage onLocate={handleLocate} loading={loading} />
+          )}
+          
+          {page === 'results' && results && (
+            <ResultsPage results={results} onBack={handleBack} />
+          )}
+        </>
       )}
     </div>
   );

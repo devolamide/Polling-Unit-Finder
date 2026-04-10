@@ -1,4 +1,4 @@
-import CliqueTechLogoImg from '../../public/cliquetech-logo.png';
+import CliqueTechLogoImg from '../assets/cliquetech-logo.png';
 
 export function Footer() {
   return (
@@ -8,7 +8,7 @@ export function Footer() {
         <a href="http://www.cliquetech.io" target="_blank" rel="noopener noreferrer" className="text-white text-gray">Clique Technologies</a>
           <a href="http://www.cliquetech.io" target="_blank" rel="noopener noreferrer">
             <img
-              src="/cliquetech-logo.png"
+              src={CliqueTechLogoImg}
               alt="CliqueTechnologies"
               className="ml-2 w-8"
             />

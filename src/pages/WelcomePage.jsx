@@ -18,7 +18,7 @@ function WelcomePage({ onLocate, loading }) {
           alert('Unable to retrieve your location. Please enable location services.');
         },
         {
-          enableHighAccuracy: false,
+          enableHighAccuracy: true,
           timeout: 10000,
           maximumAge: 300000
         }
